@@ -1,0 +1,23 @@
+api:
+  build: .
+  ports:
+    - "8080:8080"
+    - "5858:5858"
+  volumes:
+    - ".:/usr/src/app"
+    - "/usr/src/app/node_modules"
+  environment:
+    - VIRTUAL_HOST=api.tepsi.dev
+    - VIRTUAL_PORT=8080
+  links:
+    - mongodb
+server:
+  image: jwilder/nginx-proxy
+  volumes:
+    - /var/run/docker.sock:/tmp/docker.sock
+  ports:
+    - "80:80"
+mongodb:
+  image: mongo:latest
+  ports:
+    - "27017:27017"
